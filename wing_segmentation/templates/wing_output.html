@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Segment Results
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/wing_output.css' %}">
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/wing_output.js' %}"></script>
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+    <!-- Left Section: Image Container -->
+    <div class="image-container">
+        <div class="image-placeholder">
+            <img id="resultImage" src="{{ image_url }}" alt="Segmented Image" />
+        </div>
+    </div>
+
+    <!-- Right Section -->
+    <div class="right-section">
+        <!-- Table -->
+        <div class="table-section">
+            <h3>Segment Results</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Segment</th>
+                        <th>Segment Name</th>
+                        <th>Area (um²)</th>
+                        {% if diff %}
+                            <th>Area Difference (um²)</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in area_data %}
+                    <tr>
+                        <td>{{ row.segment }}</td>
+                        <td>{{ row.segment_name }}</td>
+                        <td>{{ row.area }}</td>
+                        {% if row.difference is not None %}
+                        <td>{{ row.difference }}</td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Buttons -->
+        <div class="button-section">
+            <button class="primary-button" onclick="goBack()">Upload Another Image</button>
+            <button class="secondary-button" onclick="downloadResults()">Download Results</button>
+        </div>
+    </div>
+</div>
+{% endblock content %}

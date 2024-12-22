@@ -1,0 +1,133 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f9;
+}
+
+.container {
+    display: flex;
+    width: 90vw;
+    max-width: 1700px;
+    max-height: 750px;
+    gap: 20px;
+    height: 90vh; /* Optional: Full height of the viewport */
+}
+
+/* Left Section: Image Container */
+.image-container {
+    flex: 3; /* 75% width (3 parts out of 4 total parts) */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+.image-placeholder {
+    width: 100%;
+    height: 100%;
+    border: 2px dashed #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #999;
+    margin-bottom: 20px;
+    overflow: hidden;
+    position: relative;
+}
+
+.image-placeholder img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.upload-button {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.upload-button:hover {
+    background-color: #0056b3;
+}
+
+/* Right Section */
+.right-section {
+    flex: 1; /* 25% width (1 part out of 4 total parts) */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Histogram Section */
+.histogram-section {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #fff;
+    padding: 20px;
+    position: relative;
+    height: 300px; /* Fixed height for the histogram */
+}
+
+canvas#histogram {
+    width: 100%;
+    max-width: 100%;
+    height: 100%; /* Ensure canvas fills its container */
+}
+
+canvas#hiddenCanvas {
+    width: 100%; /* Hidden canvas for processing */
+    height: auto;
+}
+
+/* Slider Section */
+.slider-section {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #fff;
+    padding: 20px;
+}
+
+/* Fly ID Section */
+.fly-id-section {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #fff;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+input[type="text"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.calculate-button {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.calculate-button:hover {
+    background-color: #218838;
+}

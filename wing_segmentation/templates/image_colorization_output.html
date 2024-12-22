@@ -1,0 +1,580 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div id="page-content">
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="container">
+                <div class="horizontal">
+                    <div class="verticals ten offset-by-one">
+                        <ol class="breadcrumb breadcrumb-fill2">
+                            <li><a href="/"><i class="fa fa-home"></i></a></li>
+                            <li><a href="/image_colorization">Image Colorization</a></li>
+                            <li><a> / </a></li>
+                            <li><a href="/image_colorization_upload">Input</a></li>
+                            <li><a> / </a></li>
+                            <li class="active">Output</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="album py-5 bg-body-tertiary">
+        <div class="container">
+
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 custom-gutter">
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h4 class="card-header" align="center">Input Image</h4>
+                        </div>
+                        <img class="bd-placeholder-img card-img-top" width="100%" height="100%" id="inputImage"  src="{{ img_input }}"
+                            preserveAspectRatio="xMidYMid slice" focusable="false">
+                        <title>Placeholder</title>
+                        </img>
+                        <div class="card-body"></div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h4 class="card-header" align="center">Gray Scale Equalized Image</h4>
+                        </div>
+                        <img class="bd-placeholder-img card-img-top" width="100%" height="100%" id="equalizedImage"  src="{{ equalized_image }}"
+                            preserveAspectRatio="xMidYMid slice" focusable="false">
+                        <title>Placeholder</title>
+                        </img>
+                        <div class="card-body"></div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 custom-gutter">
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h4 class="card-header" align="center">Gray Image Histogram</h4>
+                        </div>
+                        <canvas id="originalHistogramCanvas" width="100%" height="100%"></canvas>
+                        <title>Placeholder</title>
+                        </img>
+                        <div class="card-body"></div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h4 class="card-header" align="center">Gray Scale Equalized Image Histogram</h4>
+                        </div>
+                        <canvas id="equalizedHistogramCanvas" width="100%" height="100%"></canvas>
+                        <title>Placeholder</title>
+                        </img>
+                        <div class="card-body"></div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3">
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h4 class="card-header" align="center">Output Image</h4>
+                        </div>
+                        <img class="bd-placeholder-img card-img-top" width="100%" height="100%" id="outputImage"  src="{{ img_output }}"
+                            preserveAspectRatio="xMidYMid slice" focusable="false">
+                        <title>Placeholder</title>
+                        </img>
+                        <div class="card-body"></div>
+                    </div>
+                    <div>
+                        <button type="submit" id="saveButton" class="saveButton">Save Image</button>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3">
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h4 class="card-header" align="center">EDIT</h4>
+                        </div>
+                        <div class="slider-container">
+                            <div class="slider-wrapper">
+                                <label for="ExposureSlider" class="slider-label">Sharpening</label>
+                                <input type="range" min="0" max="1" step="0.1" value="0" class="slider" id="ExposureSlider" data-type="exposure">
+                                <span class="slider-tooltip" id="sliderTooltipExposure">0</span>
+                            </div>
+                            {% comment %} <div class="slider-wrapper">
+                                <label for="ContrastSlider" class="slider-label">Contrast</label>
+                                <input type="range" min="1" max="100" value="50" class="slider" id="ContrastSlider" data-type="contrast">
+                                <span class="slider-tooltip" id="sliderTooltipContrast">50</span>
+                            </div>
+                            <div class="slider-wrapper">
+                                <label for="SaturationSlider" class="slider-label">Saturation</label>
+                                <input type="range" min="1" max="100" value="50" class="slider" id="SaturationSlider" data-type="saturation">
+                                <span class="slider-tooltip" id="sliderTooltipSaturation">50</span>
+                            </div>
+                            <div class="slider-wrapper">
+                                <label for="TintSlider" class="slider-label">Tint</label>
+                                <input type="range" min="1" max="100" value="50" class="slider" id="TintSlider" data-type="tint">
+                                <span class="slider-tooltip" id="sliderTooltipTint">50</span>
+                            </div>
+                            <div class="slider-wrapper">
+                                <label for="TemperatureSlider" class="slider-label">Temperature</label>
+                                <input type="range" min="1" max="100" value="50" class="slider" id="TemperatureSlider" data-type="temprature">
+                                <span class="slider-tooltip" id="sliderTooltipTemperature">50</span>
+                            </div>
+                            <div class="slider-wrapper">
+                                <label for="HighlightsSlider" class="slider-label">Highlights</label>
+                                <input type="range" min="1" max="100" value="50" class="slider" id="HighlightsSlider" data-type="highlights">
+                                <span class="slider-tooltip" id="sliderTooltipHighlights">50</span>
+                            </div> {% endcomment %}
+                        </div>
+                        
+                    </div>
+                </div>
+                {% comment %} <div class="col">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h4 class="card-header" align="center">Color Picker</h4>
+                        </div>
+                        <div class="color-picker-container">
+                            <label for="colorPicker" class="color-picker-label">Select Color</label>
+                            <input type="color" id="colorPicker" class="color-picker" value="#6f42c1">
+                            <input type="hidden" id="clickedCoordinates" name="clickedCoordinates">
+                        </div>
+                        <div>
+                            <button type="submit" id="resetButton" class="resetButton">Reset</button>
+                            <button type="submit" id="saveButton" class="saveButton">Save Image</button>
+                        </div>
+                    </div>
+                </div> {% endcomment %}
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .custom-gutter {
+            gap: 1.25rem;
+        }
+
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 4.5rem;
+            }
+        }
+
+        .b-example-divider {
+            width: 100%;
+            height: 3rem;
+            background-color: rgba(0, 0, 0, .1);
+            border: solid rgba(0, 0, 0, .15);
+            border-width: 1px 0;
+            box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+        }
+
+        .b-example-vr {
+            flex-shrink: 0;
+            width: 1.5rem;
+            height: 100vh;
+        }
+
+        .bi {
+            vertical-align: -.125em;
+            fill: currentColor;
+        }
+
+        .nav-scroller {
+            position: relative;
+            z-index: 2;
+            height: 2.75rem;
+            overflow-y: hidden;
+        }
+
+        .nav-scroller .nav {
+            display: flex;
+            flex-wrap: nowrap;
+            padding-bottom: 1rem;
+            margin-top: -1px;
+            overflow-x: auto;
+            text-align: center;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .btn-bd-primary {
+            --bd-violet-bg: #712cf9;
+            --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+
+            --bs-btn-font-weight: 600;
+            --bs-btn-color: var(--bs-white);
+            --bs-btn-bg: var(--bd-violet-bg);
+            --bs-btn-border-color: var(--bd-violet-bg);
+            --bs-btn-hover-color: var(--bs-white);
+            --bs-btn-hover-bg: #6528e0;
+            --bs-btn-hover-border-color: #6528e0;
+            --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+            --bs-btn-active-color: var(--bs-btn-hover-color);
+            --bs-btn-active-bg: #5a23c8;
+            --bs-btn-active-border-color: #5a23c8;
+        }
+
+        .bd-mode-toggle {
+            z-index: 1500;
+        }
+
+        .bd-mode-toggle .dropdown-menu .active .bi {
+            display: block !important;
+        }
+
+        .slider-container {
+            width: 80%;
+            margin: 50px auto;
+            position: relative;
+            height: 400;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .slider-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            align-items: center;
+            position: relative;
+        }
+
+        .slider-label {
+            margin-right: 15px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 7px;
+            background: #ddd;
+            outline: none;
+            opacity: 0.9;
+            transition: opacity 0.3s ease-in-out;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .slider:hover {
+            opacity: 1;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            background: #6f42c1;
+            cursor: pointer;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            transition: background 0.3s ease-in-out;
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            background: #5a31a6;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            background: #6f42c1;
+            cursor: pointer;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            transition: background 0.3s ease-in-out;
+        }
+
+        .slider::-moz-range-thumb:hover {
+            background: #5a31a6;
+        }
+
+        .slider-tooltip {
+            position: absolute;
+            background: #6f42c1;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 100px;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            white-space: nowrap;
+            transform: translateX(-50%);
+            left: 50%;
+        }
+
+        .slider-wrapper:hover .slider-tooltip {
+            opacity: 1;
+        }
+
+        .color-picker-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .color-picker-label {
+            margin-right: 15px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .color-picker {
+            width: 40px;
+            height: 40px;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+        }
+    </style>
+
+</div>
+
+<script>
+    function setupSlider(sliderId, tooltipId, adjustmentType) {
+        const slider = document.getElementById(sliderId);
+        const tooltip = document.getElementById(tooltipId);
+
+        function updateTooltipPosition() {
+            const percent = (slider.value - slider.min) / (slider.max - slider.min);
+            const tooltipPosition = percent * (slider.clientWidth - 25); // 25 is thumb width
+            tooltip.style.left = `${tooltipPosition}px`;
+            tooltip.textContent = parseFloat(slider.value).toFixed(1);
+        }
+
+        function sendAdjustmentData() {
+            // Send data to backend to apply the adjustment
+            const value = parseFloat(slider.value).toFixed(1);
+            const data = {
+                type: adjustmentType,
+                value: value
+            };
+            
+            fetch('/apply_adjustment/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Adjustment application failed');
+                }
+            })
+            .then(data => {
+                // Update output image with the adjusted result
+                const outputImage = document.getElementById('outputImage');
+                outputImage.src = data.outputImageUrl; // Assuming the response contains output image URL
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        slider.addEventListener('input', () => {
+            updateTooltipPosition();
+            sendAdjustmentData();
+        });
+
+        window.addEventListener('load', updateTooltipPosition);
+    }
+
+    setupSlider('ExposureSlider', 'sliderTooltipExposure', 'exposure');
+    setupSlider('ContrastSlider', 'sliderTooltipContrast', 'contrast');
+    setupSlider('SaturationSlider', 'sliderTooltipSaturation', 'saturation');
+    setupSlider('TintSlider', 'sliderTooltipTint', 'tint');
+    setupSlider('TemperatureSlider', 'sliderTooltipTemperature', 'temperature');
+    setupSlider('HighlightsSlider', 'sliderTooltipHighlights', 'highlights');
+
+
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Get the input image element
+        const inputImage = document.getElementById('inputImage');
+        const resetButton = document.getElementById('resetButton');
+        const saveButton = document.getElementById('saveButton');
+        const outputImage = document.getElementById('outputImage');
+        const outputImageUrl = '{{ img_output }}';  // Initial output image URL
+
+        // Add click event listener to the input image
+        inputImage.addEventListener('click', function (event) {
+            // Get the click coordinates relative to the input image
+            const rect = inputImage.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+
+            // Store the clicked coordinates in the hidden input field
+            const clickedCoordinatesInput = document.getElementById('clickedCoordinates');
+            clickedCoordinatesInput.value = `${x},${y}`;
+            
+            // Get selected color from color picker
+            const selectedColor = document.getElementById('colorPicker').value;
+
+            // Send data to backend to run the model using AJAX or fetch API
+            fetch('/run_model/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'  // Add CSRF token for Django
+                },
+                body: JSON.stringify({
+                    coordinates: `${x},${y}`,
+                    color: selectedColor
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Model ran successfully, handle response to update output image
+                    console.log("done");
+                    console.log(clickedCoordinatesInput.value);
+                    return response.json();
+                } else {
+                    throw new Error('Model execution failed');
+                }
+            })
+            .then(data => {
+                // Update output image with the generated result
+                console.log("de");
+                const outputImage = document.getElementById('outputImage');
+                outputImage.src = data.outputImageUrl; // Assuming the response contains output image URL
+            })
+            .catch(error => {
+                console.log("abc");
+                console.error('Error:', error);
+            });
+        });
+        // Reset Button Event Listener
+        resetButton.addEventListener('click', function () {
+            fetch('/reset_points/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Clear existing reference points on the frontend
+                    const existingPoints = document.querySelectorAll('.reference-point');
+                    existingPoints.forEach(point => point.remove());
+                    console.log('Points reset successfully');
+                } else {
+                    throw new Error('Reset points failed');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+        // Save Button Event Listener
+        saveButton.addEventListener('click', function () {
+            const link = document.createElement('a');
+            link.href = outputImage.src;
+            link.download = 'output_image.jpg';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+    });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Get histogram data from Django context
+    const histData = {{ hist_gray|safe }};
+    const histEqualizedData = {{ hist_equalized|safe }};
+
+    // Create labels for pixel intensity (0-255)
+    const labels = Array.from({ length: 256 }, (_, i) => i);
+
+    // Configure the Chart.js histogram for the original image
+    const ctxOriginal = document.getElementById('originalHistogramCanvas').getContext('2d');
+    new Chart(ctxOriginal, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Pixel Intensity Frequency (Original)',
+                data: histData,
+                backgroundColor: 'gray',
+                borderColor: 'black',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Pixel Intensity'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Frequency'
+                    }
+                }
+            }
+        }
+    });
+
+    // Configure the Chart.js histogram for the equalized image
+    const ctxEqualized = document.getElementById('equalizedHistogramCanvas').getContext('2d');
+    new Chart(ctxEqualized, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Pixel Intensity Frequency (Equalized)',
+                data: histEqualizedData,
+                backgroundColor: 'blue',
+                borderColor: 'black',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Pixel Intensity'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Frequency'
+                    }
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

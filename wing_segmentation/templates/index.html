@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <!-- Banner -->
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <img src="static/images/logo.png" alt=""
+                 style="margin-top: 2%; border: none !important; box-shadow: none !important;">
+            <br>
+            <br>
+
+        </div>
+
+    </div>
+
+
+
+    <section class="main-banner">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="banner-content">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="banner-caption">
+                                    <h4>MORPHOMETRIC Analysis of <em>Drosophila</em></h4>
+                                    {#                                    <span>Welcome <span#}
+                                    {#                                            style="text-transform:uppercase"><strong> {{ request.user.username }} </strong></span></span>#}
+                                    <p>
+                                        <br>
+                                        <br>
+                                        <strong><em>Makkhimeter</em> </strong>is a web tool to digitally measure the
+                                        dimensions and
+                                        characteristics of many morphological traits of <i>Drosophila melanogaster.</i>
+                                    </p>
+                                    <p>
+                                        <strong><em>Makkhimeter</em></strong> is jointly developed by DOW Fly Research
+                                        Lab and Stock
+                                        Center, DOW
+                                        College of Biotechnology, DOW University of Health and Sciences and Department
+                                        of Computer Science, Usman Institute of
+                                        Technology, Pakistan.
+                                    </p>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section class="services">
+        <div class="container-fluid">
+            <div class="row">
+                <!--Image Colorization-->
+                <div class="col-md-4">
+                    <div class="service-item first-item">
+                        <h4>Image Colorization</h4>
+                        <br>
+                        <h4><a href="image_colorization" target="_blank"> Process ↗ </a></h4>
+                    </div>
+                </div>
+                
+                <!--Eye Color Detection-->
+                <div class="col-md-4">
+                    <div class="service-item first-item">
+                        <h4>Eye Color Detection</h4>
+                        <br>
+                        <h4><a href="eye_color_detection" target="_blank"> Process ↗ </a></h4>
+                    </div>
+                </div>
+
+                <!--Body Color Detection-->
+                <div class="col-md-4">
+                    <div class="service-item first-item">
+                        <h4>Body Color Detection</h4>
+                        <br>
+                        <h4><a href="body_color_detection" target="_blank"> Process ↗ </a></h4>
+                    </div>
+                </div>
+
+                <!--Gender Identification-->
+                <div class="col-md-4">
+                    <div class="service-item first-item">
+                        <h4>Gender Identification</h4>
+                        <br>
+                        <h4><a href="gender_identification" target="_blank"> Process ↗ </a></h4>
+                    </div>
+                </div>
+
+                <!--Sharpening Image-->
+                <div class="col-md-4">
+                    <div class="service-item first-item">
+                        <h4>Sharpening Image</h4>
+                        <br>
+                        <h4><a href="sharpening_image" target="_blank"> Process ↗ </a></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+{% endblock %}

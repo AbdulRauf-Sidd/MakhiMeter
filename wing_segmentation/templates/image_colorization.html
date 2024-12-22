@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+    <!-- Page Heading -->
+    <div class="page-heading">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="container">
+                        <div class="horizontal">
+                            <div class="verticals ten offset-by-one">
+
+                                <ol class="breadcrumb breadcrumb-fill2">
+                                    <li><a href="/"><i class="fa fa-home"></i></a></li>
+                                    <li class="active">Image Colorization</li>
+                                </ol>
+                            </div>
+                            <h1>Image Colorization</h1>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+
+                    <p align="justify"> The images of fruit fly is usually in grayscale and grayscale images can limit the
+                        ability to visually distinguish and analyze the various physical characteristics of
+                        Drosophila melanogaster, such as eye color, body color, and gender-specific traits.
+                        The pigmentation of Drosophila melanogaster is determined by pigments produced by specialized cells called ommochrome cells. These pigments are synthesized through a series of enzymatic reactions from amino acids, regulated by pigmentation pathway genes. 
+                        Mutations in these genes can alter eye color or lead to a loss of pigmentation.
+                        Colorizing these grayscale images can provide researchers with more informative and 
+                        visually appealing representations, aiding in the detailed phenotypic analysis of the fruit
+                        flies
+
+
+                    </p>
+                    <br>
+                    <br>
+                    <div class="down-content">
+                        <strong>
+                            <p align="justify" style="color:#626ad1; font-weight: bold; font-size:18px;">
+                                Easily upload your Drosophila grayscale image and get precise colorized image with our automated
+                                analysis system. Our tool can detect and analyze four common colors and provide
+                                detailed
+                                colorized image with color names and their corresponding hex values.
+
+                                In addition to color visualization, we provide a editing mode through which 
+                                you can adjust, edit, enhance 
+                                color based on your preference. 
+                                
+                            </p>
+                        </strong>
+                    </div>
+                    <section class="simple-post">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <img src="static/images/greyscale_to_color.jpg" alt="">
+
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </section>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Simple Post -->
+
+    <div class="filled-radius-button">
+        <a href="image_colorization_upload">Proceed</a>
+    </div>
+
+
+{% endblock %}
