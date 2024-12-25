@@ -20,10 +20,13 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from wing_segmentation.views import home
+# from wing_segmentation.views import image_color
 
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("wing/", include('wing_segmentation.urls')),
+    path("brain/", include('brain_analysis.urls')),
     path("", home, name='home'),
+    # path("image_colorization", image_color, name='color')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

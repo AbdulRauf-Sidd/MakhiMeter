@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Static Image Processor</title>
+</head>
+<body>
+    <h1>Modify Image</h1>
+
+    <label for="erosion">Erosion (0-5):</label>
+    <input type="range" id="erosion" min="0" max="10" value="0">
+
+    <label for="dilation">Dilation (0-5):</label>
+    <input type="range" id="dilation" min="0" max="10" value="0">
+
+    <label for="tresh">Tresh (0-200):</label>
+    <input type="range" id="tresh" min="0" max="200" value="0">
+
+    <button value="save", name="hi" id="save">save</button>
+    <br>
+
+    <img id="imageDisplay" src="" alt="Processed Image">
+
+    <script>
+        function updateImage() {
+            const erosion = document.getElementById('erosion').value;
+            const dilation = document.getElementById('dilation').value;
+            const treshold = document.getElementById('tresh').value;
+            const src = `http://localhost:8000/wing/process-static-image/?erosion=${erosion}&dilation=${dilation}&treshold=${treshold}`;
+            document.getElementById('imageDisplay').src = src;
+        }
+
+        function save() {
+    const erosion = document.getElementById('erosion').value;
+    const dilation = document.getElementById('dilation').value;
+    const threshold = document.getElementById('tresh').value;
+    const src = `http://localhost:8000/wing/save-static-image/?erosion=${erosion}&dilation=${dilation}&treshold=${threshold}`;
+
+    // Making a fetch GET request to the server
+    fetch(src)
+        .then(response => {
+            if (response.ok) {
+                return response.blob();  // Assuming the response is an image in blob format
+            }
+            throw new Error('Network response was not ok.');
+        })
+        .then(blob => {
+            // Create a local URL for the blob object
+            const imageUrl = URL.createObjectURL(blob);
+            // Update the src attribute of the imageDisplay element with the new image URL
+            document.getElementById('imageDisplay').src = imageUrl;
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+}
+
+
+        document.getElementById('erosion').addEventListener('input', updateImage);
+        document.getElementById('dilation').addEventListener('input', updateImage);
+        document.getElementById('tresh').addEventListener('input', updateImage);
+        document.getElementById('save').addEventListener('click', save);
+        updateImage();  // Initial call to display the image
+    </script>
+</body>
+</html>

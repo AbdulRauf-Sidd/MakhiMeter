@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Display Image</title>
+    <style>
+        /* Basic styling for the body */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        /* Container styling for the image sections */
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            max-height: 20%;
+            height: 30%;
+        }
+
+        /* Styling for each column to hold images */
+        .column {
+            flex: 1; /* Makes both columns take up equal space */
+            margin: 10px;
+            padding: 20px;
+            background-color: white;
+            height: 30%;
+            max-height: 20%;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Styling for image elements */
+        img {
+            width: 100%; /* Makes images fill the container */
+            height: 30%;
+            max-height: 20%;
+            border-radius: 8px;
+        }
+
+        /* Header styling within each column */
+        h1 {
+            text-align: center;
+            color: #555;
+        }
+
+        /* Styling for the table container */
+        .table-container {
+            margin: 30px auto 0;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            max-width: 800px;
+        }
+
+        /* Styling for the table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f4f4f4;
+            color: #555;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        td {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Column for the original image -->
+        <div class="column">
+            <h1>Original</h1>
+            <img src="data:image/png;base64,{{ og_image }}" alt="Original Image">
+        </div>
+
+        <!-- Column for the segmented image -->
+        <div class="column">
+            <h1>Segmented Image</h1>
+            <img src="data:image/png;base64,{{ image_base64 }}" alt="Segmented Image">
+        </div>
+    </div>
+
+    <!-- Table Container -->
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Segment</th>
+                    <th>Segment Name</th>
+                    <th>Area</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in area_data %}
+                <tr>
+                    <td>{{ row.segment }}</td>
+                    <td>{{ row.segment_name }}</td>
+                    <td>{{ row.area }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

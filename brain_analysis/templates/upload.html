@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Image</title>
+    <style>
+        /* Basic styling for the body */
+        body {
+            font-family: 'Arial', sans-serif; /* Clean font for text */
+            background-color: #f0f0f0; /* Light grey background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Full viewport height */
+            margin: 0; /* Remove default margin */
+        }
+
+        /* Styling for the form */
+        form {
+            background: white; /* White background for the form */
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Subtle shadow for 3D effect */
+            border-radius: 8px; /* Rounded corners */
+            width: 300px; /* Fixed width */
+        }
+
+        /* Style adjustments for the form elements */
+        input, button {
+            width: 100%; /* Full width */
+            padding: 8px;
+            margin-top: 10px; /* Add space between form elements */
+            box-sizing: border-box; /* Include padding in width calculation */
+            border-radius: 4px; /* Rounded corners for input fields and buttons */
+            border: 1px solid #ccc; /* Light grey border */
+        }
+
+        /* Styling for the submit button */
+        button {
+            background-color: #5c67f2; /* Blue background */
+            color: white; /* White text */
+            font-size: 16px; /* Larger font size */
+            border: none; /* Remove border */
+            cursor: pointer; /* Pointer cursor on hover */
+        }
+
+        button:hover {
+            background-color: #4a54e1; /* Slightly darker blue on hover */
+        }
+    </style>
+</head>
+<body>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

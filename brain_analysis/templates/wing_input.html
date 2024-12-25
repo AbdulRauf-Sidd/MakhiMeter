@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Wing Segmentation
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/wing_input.css' %}">
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/wing_input.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+<form id="uploadForm" action="/wing/input/" method="POST" enctype="multipart/form-data">
+{% csrf_token %}
+<div class="container">
+    <!-- Left Section: Image Container -->
+    <div class="image-container">
+        <div class="image-placeholder" id="imagePlaceholder">
+            <img id="uploadedImage" src="" alt="Uploaded Image" style="display: none;"/>
+            <span id="placeholderText">No image uploaded</span>
+        </div>
+        <button class="upload-button" onclick="uploadImage()" type="button">Upload Image</button>
+        <input type="file" name="image" id="imageUpload" style="display: none;" onchange="handleImageUpload(event)">
+    </div>
+
+    <!-- Right Section -->
+    <div class="right-section">
+        <!-- Histogram -->
+        <div class="histogram-section">
+            <h3>Histogram</h3>
+            <canvas id="histogram"></canvas>
+        </div>
+
+        <!-- Slider -->
+        <div class="slider-section">
+            <label for="slider">Adjust Intensity:</label>
+            <input type="range" id="slider" min="-100" max="100" value="0" oninput="updateBackend(this.value)">
+        </div>
+
+        <!-- Fly ID Input and Button -->
+        <div class="fly-id-section">
+            <label for="fly-id">Fly ID:</label>
+            <input type="text" id="fly-id" name="fly-id" placeholder="Enter Fly ID">
+            <button class="calculate-button" type='submit'>Calculate Segments</button>
+        </div>
+        
+    </div>
+</div>
+</form>
+{% endblock content %}
