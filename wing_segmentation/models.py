@@ -16,5 +16,16 @@ class Wing(models.Model):
     area_1P = models.FloatField(help_text="Area for 1P in square micrometers", default=0)
     area_B1 = models.FloatField(help_text="Area for B1 in square micrometers", default=0)
 
+    def save(self, *args, **kwargs):
+        # Check if the image has no name
+        try:
+            if self.original_image.name:
+                pass
+        except AttributeError:
+            self.original_image.name = f"wing_segments.png"
+        super(Wing, self).save(*args, **kwargs) 
+
+
+
     def __str__(self):
         return f"Wing {self.fly_id} added on {self.date_added}"

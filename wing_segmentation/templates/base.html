@@ -379,11 +379,11 @@
                 <ul>
                     <li><a href="/">Homepage</a></li>
             
-                    <li><a href="/wing/">Wing Dimensions</a></li>
+                    <li><a href="/wing/upload/">Wing Dimensions</a></li>
 
-                    <li><a href="/brain/">Brain Analysis</a></li>
+                    <li><a href="/brain/upload/">Brain Analysis</a></li>
 
-                    <li><a href="/flight/">Flight Trajectory</a></li>
+                    <li><a href="/flight/upload/">Flight Trajectory</a></li>
                 </ul>
             </nav>
             <section class="alt">
@@ -446,8 +446,11 @@
 <script src="../../static/vendor/tinymce/tinymce.min.js"></script>
 <script src="../../static/vendor/php-email-form/validate.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{% block js %}
+{% endblock %}
 
 <script>
+
     var uploadBtns = document.querySelectorAll(".uploadBtn");
 
     for (var i = 0; i < uploadBtns.length; i++) {

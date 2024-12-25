@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block content %}
 
     <div id="page-content">
@@ -11,7 +11,7 @@
                         <div class="verticals ten offset-by-one">
                             <ol class="breadcrumb breadcrumb-fill2">
                                 <li><a href="/"><i class="fa fa-home"></i></a></li>
-                                <li><a href="/wing/">Wing Segmentation</a></li>
+                                <li><a href="/wing/upload/">Wing Segmentation</a></li>
                                 <li><a> / </a></li>
                                 <li class="active">Input</li>
                             </ol>
@@ -78,7 +78,7 @@
                                 <h2>{{ img_name }}</h2>
                                 <br>
                                 <div class="img-container">
-                                    <img src="static/images/wing_upload.jpg" alt="image">
+                                    <img src="{% static 'images/wing_upload.jpg' %}" alt="Wing Image">
                                 </div>
                             </div>
                         </div>

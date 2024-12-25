@@ -1,4 +1,4 @@
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageOps
 import numpy as np
 import cv2
 from rembg import remove
@@ -36,7 +36,12 @@ def post_process(image, original_image, size):
     predicted_img = (image / image.max()) * 255  
     predicted_img = predicted_img.astype(np.uint8) 
     predicted_img = cv2.resize(predicted_img, size, interpolation=cv2.INTER_NEAREST)
-    return label_and_save_areas(predicted_img, original_image)
+    # original_image = cv2.imread(original_image)
+    # og_image = cv2.resize(np.array(original_image), size, interpolation=cv2.INTER_LANCZOS4) 
+    with Image.open(original_image) as img:
+        img = ImageOps.exif_transpose(img)
+        og_image = img.resize(size, Image.Resampling.LANCZOS)
+    return label_and_save_areas(predicted_img, og_image) 
     
 
 def label_and_save_areas(inp, orginal_img):
@@ -52,10 +57,14 @@ def label_and_save_areas(inp, orginal_img):
         218: "1P",
         255: "B1",
     }
-
-    output_image = Image.fromarray(inp).convert('RGB')  
+ 
+    output_image = orginal_img.convert('RGB')  
     draw = ImageDraw.Draw(output_image)
     areas = {'2P': 0, '3P': 0, 'S': 0, 'D': 0, 'M': 0, '1P': 0, 'B1': 0}
+    font_size = 30 
+    font_path = "wing_segmentation/static/fonts/Poppins-Bold.ttf"  
+    font = ImageFont.truetype(font_path, font_size)   
+
 
     for value in unique_values:
         if value == 0:
@@ -77,7 +86,25 @@ def label_and_save_areas(inp, orginal_img):
             
             if value in names:
                 name = names[value]
-                draw.text((cX, cY), f'{name}', fill=(211, 247, 5))  # Yellow text
+                text = f'{name}'
+
+
+                text_width = len(text) * 25
+                text_height = 40
+                padding = 2  
+
+                draw.rectangle(
+                    [(cX - padding, cY - padding),
+                     (cX + text_width + padding, cY + text_height + padding)],
+                    fill=(0, 0, 0, 150)  
+                )
+
+                draw.text(
+                    (cX, cY), 
+                    text, 
+                    font=font,
+                    fill=(255, 255, 225) 
+                )
                 areas[name] = area
                 
     return output_image, areas

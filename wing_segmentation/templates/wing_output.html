@@ -42,10 +42,6 @@ Segment Results
 </style>
 {% endblock %}
 
-{% block extra_js %}
-<script src="{% static 'js/wing_output.js' %}"></script>
-{% endblock %}
-
 {% block content %}
 <div class="container">
     <div class="segment-result-container">
@@ -81,10 +77,53 @@ Segment Results
             </div>
 
             <div class="segment-button-section">
-                <button class="primary-button" onclick="goBack()">Upload Another Image</button>
-                <button class="secondary-button" onclick="downloadResults()">Download Results</button>
+                <button class="primary-button" onclick="location.href='/wing/upload/'">Upload Another Image</button>
+                
+                    <!-- {% csrf_token %} -->
+                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                    <input type="hidden" id="wing_data" value="{{ wing_id }}">  
+                    <button class="secondary-button" onclick="downloadResults()">Download Results</button>
+                
             </div>
         </div>
     </div>
 </div>
+<script>
+    function getCSRFToken() {
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
+    return csrfToken ? csrfToken.value : '';
+}
+function downloadResults() {
+    // Log the wing_id for debugging
+    const wingId = document.getElementById('wing_data').value;
+    console.log('Wing ID:', wingId);
+
+    // Send the wing_id to the backend directly through the URL
+    fetch(`/wing/download/${wingId}/`, {
+        method: 'GET',  // Use GET to pass the ID directly
+        headers: {
+            'X-CSRFToken': getCSRFToken()  // Ensure CSRF token is sent
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to download PDF');
+        }
+        return response.blob();
+    })
+    .then(blob => {
+        const downloadUrl = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = downloadUrl;
+        a.download = 'wing_results.pdf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    })
+    .catch(error => {
+        alert('Error: ' + error.message);
+    });
+}
+
+    </script>
 {% endblock content %}
