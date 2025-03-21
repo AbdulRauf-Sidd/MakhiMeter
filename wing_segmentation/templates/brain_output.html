@@ -1,0 +1,246 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div id="page-content">
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="container">
+                <div class="horizontal">
+                    <div class="verticals ten offset-by-one">
+                        <ol class="breadcrumb breadcrumb-fill2">
+                            <li><a href="/"><i class="fa fa-home"></i></a></li>
+                            <li><a href="/brain/upload/">Brain Analysis</a></li>
+                            <li><a> / </a></li>
+                            <li><a href="/brain/upload/">Input</a></li>
+                            <li><a> / </a></li>
+                            <li class="active">Output</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="album py-5 bg-body-tertiary">
+        <div class="container">
+            <div class="row justify-content-center">
+                <!-- Input Image and Prediction Card -->
+                <div class="col-md-10">
+                    <div class="card shadow-sm rounded-lg hover-zoom">
+                        <div class="card-body text-center">
+                            <h4 class="card-header bg-primary text-white rounded-top">Brain Image</h4>
+                            <img class="bd-placeholder-img card-img-top rounded-bottom" width="100%" height="100%" id="inputImage" 
+                                 src="{{ image_url }}" alt="Brain Image" preserveAspectRatio="xMidYMid slice" 
+                                 style="cursor: pointer; transition: transform 0.3s ease;" onclick="viewImage()">
+                            
+                            <!-- Prediction Text and Logo Below Image -->
+                            <div class="prediction-section mt-4 d-flex align-items-center justify-content-center">
+                                <p class="display-6 text-primary font-weight-bold" style="font-size: 1.5rem; margin: 0;">
+                                    Full Area: {{ full_area }} <br> <br>
+                                    Mutated Area: {{ m_area }} <br> <br>
+                                    
+                                    <span id="flightrText">Ratio: {{ r }}</span>
+                                </p>
+                                <!-- flight Icon -->
+                                <span id="flightIcon" class="ml-3"></span> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Hog Feature Card -->
+                <!-- <div class="col-md-6">
+                    <div class="card shadow-sm rounded-lg hover-zoom">
+                        <div class="card-body text-center">
+                            <h4 class="card-header bg-primary text-white rounded-top">Feature Image</h4>
+                            <img class="bd-placeholder-img card-img-top rounded-bottom" width="100%" height="100%" id="featureImage" 
+                                 src="{{ hog_map }}" alt="Input Image" preserveAspectRatio="xMidYMid slice" 
+                                 style="cursor: pointer; transition: transform 0.3s ease;" onclick="viewImage()">
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+    
+
+    <style>
+        .custom-gutter {
+            gap: 1.25rem;
+        }
+
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 4.5rem;
+            }
+        }
+
+        .b-example-divider {
+            width: 100%;
+            height: 3rem;
+            background-color: rgba(0, 0, 0, .1);
+            border: solid rgba(0, 0, 0, .15);
+            border-width: 1px 0;
+            box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+        }
+
+        .b-example-vr {
+            flex-shrink: 0;
+            width: 1.5rem;
+            height: 100vh;
+        }
+
+        .bi {
+            vertical-align: -.125em;
+            fill: currentColor;
+        }
+
+        .nav-scroller {
+            position: relative;
+            z-index: 2;
+            height: 2.75rem;
+            overflow-y: hidden;
+        }
+
+        .nav-scroller .nav {
+            display: flex;
+            flex-wrap: nowrap;
+            padding-bottom: 1rem;
+            margin-top: -1px;
+            overflow-x: auto;
+            text-align: center;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .btn-bd-primary {
+            --bd-violet-bg: #712cf9;
+            --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+
+            --bs-btn-font-weight: 600;
+            --bs-btn-color: var(--bs-white);
+            --bs-btn-bg: var(--bd-violet-bg);
+            --bs-btn-border-color: var(--bd-violet-bg);
+            --bs-btn-hover-color: var(--bs-white);
+            --bs-btn-hover-bg: #6528e0;
+            --bs-btn-hover-border-color: #6528e0;
+            --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+            --bs-btn-active-color: var(--bs-btn-hover-color);
+            --bs-btn-active-bg: #5a23c8;
+            --bs-btn-active-border-color: #5a23c8;
+        }
+
+        .bd-mode-toggle {
+            z-index: 1500;
+        }
+
+        .bd-mode-toggle .dropdown-menu .active .bi {
+            display: block !important;
+        }
+
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+    
+        .hover-zoom:hover img {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+    
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+    
+        .card-header {
+            font-size: 1.25rem;
+            padding: 15px;
+        }
+    
+        .text-primary {
+            color: #343a40 !important;
+        }
+    
+        .album {
+            background-color: #f8f9fa;
+            padding: 40px 0;
+        }
+    
+        .card-img-top {
+            border-bottom-left-radius: 0 !important;
+            border-bottom-right-radius: 0 !important;
+        }
+    
+        .rounded-top {
+            border-top-left-radius: 20px !important;
+            border-top-right-radius: 20px !important;
+        }
+    
+        .rounded-bottom {
+            border-bottom-left-radius: 20px !important;
+            border-bottom-right-radius: 20px !important;
+        }
+    
+        .rounded-lg {
+            border-radius: 20px !important;
+        }
+    
+        .shadow-sm {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+        }
+    
+        .prediction-section {
+            margin-top: 1.5rem;
+            font-size: 1.5rem;
+        }
+    
+        #genderIcon {
+            font-size: 2rem;
+            margin-left: 0.5rem;
+        }
+    
+        
+        .gender-icon-img {
+            width: 50px; 
+            height: 50px;
+            border-radius: 50%;  
+            object-fit: cover;
+        }
+    </style>
+
+    <script>
+        function viewImage(){
+            const img_src= document.getElementById('inputImage').src;
+            const img_Modal= window.open(img_src, '_blank');
+            img_Modal.focus();
+        }
+
+            // Function to update the gender icon based on prediction
+        document.addEventListener('DOMContentLoaded', function() {
+            const genderText = document.getElementById('genderText').textContent.trim();
+            const genderIcon = document.getElementById('genderIcon');
+            
+            // Check the gender and assign the appropriate symbol
+            if (genderText.toLowerCase() === 'male') {
+                genderIcon.innerHTML = `<img src= "static/images/male_icon.png" alt="Male Icon" class="gender-icon-img">`;
+            } else if (genderText.toLowerCase() === 'female') {
+                genderIcon.innerHTML = `<img src= "static/images/female_icon.png" alt="Female Icon" class="gender-icon-img">`;
+            }
+        });
+    </script>
+
+
+</div>
+
+
+
+{% endblock %}

@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+    <div id="page-content">
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="container">
+                    <div class="horizontal">
+                        <div class="verticals ten offset-by-one">
+                            <ol class="breadcrumb breadcrumb-fill2">
+                                <li><a href="/"><i class="fa fa-home"></i></a></li>
+                                <li><a href="/flight/input/">Flight Trajectory</a></li>
+                                <li><a> / </a></li>
+                                <li class="active">Input</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <section class="forms">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <h2>Flight Trajectory</h2>
+                                <br>
+                                <p align="justify">For optimal results, we recommend uploading a video that is clear,
+                                    well-lit, and
+                                    free from any visual distractions such as background clutter or noise. <br>
+                                    <br></p>
+
+                                <form id="contact upload-form" method="post" name='upload'
+                                      enctype="multipart/form-data">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <fieldset>
+                                                {% csrf_token %}
+                                                <label for="img">Select video:</label>
+                                                <input type="file" id="img" name="img" accept="image/*" required=""
+                                                       style="padding-top: 25px; padding-bottom: 75px">
+                                                <p>Accepted formats include <em>MP4</em>, <em>MKV</em>,<em> MOV</em>
+                                                    ,<em> AVI</em> etc.</p>
+                                            </fieldset>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <button type="submit" id="uploadBtn" class="uploadBtn"> Upload & Next
+                                            </button>
+                                        </div>
+                                        <button class="btn btn-primary" type="button" disabled id="waitBtn"
+                                                style="display: none">
+                                            <span class="spinner-border spinner-border-sm" role="status"
+                                                  aria-hidden="true"></span>
+                                            <span class="visually-hidden">Please wait...</span>
+                                        </button>
+                                    </div>
+                                </form>
+                                <br>
+                                <br>
+                                <h2>{{ out1 }}<em style="color: rebeccapurple">{{ ans }}</em>{{ out2 }}</h2>
+                                <h4><a href="feedback">{{ out3 }}</a></h4>
+                                <br>
+                                <h4>{{ out4 }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+            <div class="col-md-6">
+                <section class="forms">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h2>{{ img_name }}</h2>
+                                <br>
+                                <div class="img-container">
+                                    <img src="{% static 'images/flight_image.jpg' %}" alt="image">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <style>
+                .img-container {
+                    max-width: 400px; /* set the maximum width you want */
+                    margin: auto; /* center the container */
+                }
+
+                .img-container img {
+                    max-width: 100%; /* make the image responsive */
+                    height: auto; /* auto-adjust the height */
+                }
+            </style>
+
+
+        </div>
+    </div>
+{% endblock %}

@@ -21,6 +21,10 @@ def login(request):
     if request.method == 'GET':
         return render(request, 'login_user.html')
     
+def register(request):
+    if request.method == 'GET':
+        return render(request, 'register.html')
+    
 def logout(request):
     if request.method == 'GET':
         return render(request, 'logout.html')
@@ -50,13 +54,21 @@ def wing_upload(request):
         pre_processed_image = preprocess_image(image, (256, 256))
         processed_image = process_image(pre_processed_image)
         segmented_image = predict(processed_image)
-        labeled_image, areas = post_process(segmented_image, image, size)
+        labeled_image, areas, seg = post_process(segmented_image, image, size)
 
-
+    
         buffer_labeled = BytesIO()
         labeled_image.save(buffer_labeled, format="PNG")
         buffer_labeled.seek(0)
         labeled_image_file = ContentFile(buffer_labeled.read(), name=f"labeled.png")
+
+
+        # with Image.open(seg) as img:
+        #     img = ImageOps.exif_transpose(img)
+        #     buffer_labeled = BytesIO()
+        #     img.save(buffer_labeled, format="PNG")
+        #     buffer_labeled.seek(0)
+        #     labeled_image_file = ContentFile(buffer_labeled.read(), name=f"labeled.png")
         
         # labeled_image_file = ContentFile(buffer_labeled.read(), name=f"{fly_id}_labeled.png")
         # original_image_file = ContentFile(buffer_original.read(), name=f"{fly_id}_original.png")
@@ -144,3 +156,22 @@ def download_results(request, wing_id):
     buffer.save()
 
     return response
+
+
+def test(request):
+    if request.method == 'POST' and request.FILES.get('image'):
+        uploaded_image = request.FILES['image']
+
+        uploaded_image
+        # Process the image
+        processed_image = testing(uploaded_image)
+        
+        # Save processed image to an in-memory byte stream
+        image_io = BytesIO()
+        processed_image.save(image_io, format='JPEG')
+        image_io.seek(0)
+
+        # Return the processed image as an HTTP response
+        return HttpResponse(image_io, content_type='image/jpeg')
+
+    return render(request, 'test.html')

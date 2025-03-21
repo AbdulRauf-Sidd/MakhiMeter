@@ -4,9 +4,9 @@ import cv2
 from rembg import remove
 from keras.utils import normalize
 from keras.models import Model
-from keras.layers import Input, Conv2D, MaxPooling2D, UpSampling2D, concatenate, Conv2DTranspose, BatchNormalization, Dropout, Lambda
-from tensorflow.keras import backend as K
-import tensorflow as tf
+from keras.layers import Input, Conv2D, MaxPooling2D, concatenate, Conv2DTranspose, Dropout
+from io import BytesIO
+
 
 
 
@@ -22,22 +22,28 @@ def process_image(image):
     test_img = np.array(image)
     test_img = normalize(test_img, axis=1)
     test_img = np.expand_dims(test_img, axis=-1)
-    test_img_input = np.expand_dims(test_img, axis=-1)
-    test_img_input= np.expand_dims(test_img_input, 0)
-    return test_img_input
+    test_img= np.expand_dims(test_img, axis=-1)
+    test_img= np.expand_dims(test_img, 0)
+    return test_img
 
 def predict(image):    
     model = multi_unet_model()
     model.load_weights('/home/abdulrauf/Projects/makhi_meter/wing_segmentation/models/unet_256_bg_removed_13000_checkpoint_epoch-21_val_loss-0.2400.keras')  
     prediction = (model.predict(image))
+    output_image = np.argmax(prediction, axis=3)[0, :, :]
+    output_image = (output_image * 255 / output_image.max()).astype(np.uint8)
+    
+    # Create an Image object using PIL
+    img = Image.fromarray(output_image)
+    
+    # Save the image to the desired path
+    img.save('Wing_image1023.png')
     return np.argmax(prediction, axis=3)[0,:,:]
 
 def post_process(image, original_image, size):
     predicted_img = (image / image.max()) * 255  
     predicted_img = predicted_img.astype(np.uint8) 
     predicted_img = cv2.resize(predicted_img, size, interpolation=cv2.INTER_NEAREST)
-    # original_image = cv2.imread(original_image)
-    # og_image = cv2.resize(np.array(original_image), size, interpolation=cv2.INTER_LANCZOS4) 
     with Image.open(original_image) as img:
         img = ImageOps.exif_transpose(img)
         og_image = img.resize(size, Image.Resampling.LANCZOS)
@@ -107,7 +113,27 @@ def label_and_save_areas(inp, orginal_img):
                 )
                 areas[name] = area
                 
-    return output_image, areas
+    return output_image, areas, inp
+
+def testing(image):
+    image_io = BytesIO(image.read())
+    image.seek(0)  
+    with Image.open(image_io) as img:
+        img = remove(img)
+        img_gray = img.convert('L')
+        img_resized = img_gray.resize((256, 256), Image.Resampling.LANCZOS)
+
+    test_img = np.array(img_resized)
+    test_img = normalize(test_img, axis=1)
+    test_img = np.expand_dims(test_img, axis=-1)
+    test_img= np.expand_dims(test_img, axis=-1)
+    test_img= np.expand_dims(test_img, 0)
+    model = multi_unet_model(n_classes=2, IMG_HEIGHT=256, IMG_WIDTH=256, IMG_CHANNELS=1)
+    model.load_weights('/home/abdulrauf/Projects/makhi_meter/wing_segmentation/models/unet_256_bg_removed_80_20epochs.h5')  
+    prediction = (model.predict(image))
+    return np.argmax(prediction, axis=3)[0,:,:]
+
+
 
 
 
