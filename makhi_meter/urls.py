@@ -28,6 +28,7 @@ urlpatterns = [
     path("wing/", include('wing_segmentation.urls')),
     path("brain/", include('brain_analysis.urls')),
     path("flight/", include('flight.urls')),
+    path("gender/", include('gender.urls')),
     path("", home, name='home'),
     path("login_user", login, name='login'),
     path("register", register, name='register'),

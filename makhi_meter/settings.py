@@ -43,6 +43,12 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "wing_segmentation",
+    # "rest_framework",
+    # "corsheaders",
+    # "django_filters",
+    # 'brain',
+    "flight",
+    'brain_analysis',
 ]
 
 MIDDLEWARE = [
