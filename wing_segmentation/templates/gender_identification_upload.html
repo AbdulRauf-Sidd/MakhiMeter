@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block content %}
 
     <div id="page-content">
@@ -78,7 +78,7 @@
                                 <h2>{{ img_name }}</h2>
                                 <br>
                                 <div class="img-container">
-                                    <img src="static/images/gender_upload.jpg" alt="image">
+                                    <img src="{% static 'images/gender.jpg' %}" alt="image">
                                 </div>
                             </div>
                         </div>
@@ -93,8 +93,8 @@
                 }
 
                 .img-container img {
-                    max-width: 100%; /* make the image responsive */
-                    height: auto; /* auto-adjust the height */
+                    /* max-width: 100%; make the image responsive */
+                    height: 150px; /* auto-adjust the height */
                 }
             </style>
 
