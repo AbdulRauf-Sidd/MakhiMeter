@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Segment Results
+{% endblock %}
+
+{% block extra_css %}
+<!-- <link rel="stylesheet" href="{% static 'css/wing_output.css' %}"> -->
+<style>
+    .segment-result-container {
+        display: flex;
+        flex-direction: row;  /* Ensure horizontal layout */
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 20px;  /* Add spacing between columns */
+    }
+    .segment-image-container, .segment-right-section {
+        width: 48%;  /* Make them take equal width */
+    }
+    .segment-image-placeholder img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+    .segment-table-section {
+        margin-top: 10px;
+    }
+    .segment-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .segment-table th, .segment-table td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: center;
+    }
+    .segment-button-section {
+        margin-top: 20px;
+        text-align: center;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="segment-result-container">
+        <!-- Image Section (Left Column) -->
+        <div class="segment-image-container">
+            <div class="segment-image-placeholder">
+                <img id="resultImage" src="{{ image_url }}" alt="Segmented Image" />
+            </div>
+        </div>
+
+        <!-- Table Section (Right Column) -->
+        <div class="segment-right-section">
+            <div class="segment-table-section">
+                <h3>Segment Results</h3>
+                <table class="segment-table">
+                    <thead>
+                        <tr>
+                            <th>Segment</th>
+                            <th>Segment Name</th>
+                            <th>Area (um²)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in area_data %}
+                        <tr>
+                            <td>{{ row.segment }}</td>
+                            <td>{{ row.segment_name }}</td>
+                            <td>{{ row.area }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="segment-button-section">
+                <button class="primary-button" onclick="location.href='/wing/upload/'">Upload Another Image</button>
+                
+                    <!-- {% csrf_token %} -->
+                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                    <input type="hidden" id="wing_data" value="{{ wing_id }}">  
+                    <button class="secondary-button" onclick="downloadResults()">Download Results</button>
+                
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function getCSRFToken() {
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
+    return csrfToken ? csrfToken.value : '';
+}
+function downloadResults() {
+    // Log the wing_id for debugging
+    const wingId = document.getElementById('wing_data').value;
+    console.log('Wing ID:', wingId);
+
+    // Send the wing_id to the backend directly through the URL
+    fetch(`/wing/download/${wingId}/`, {
+        method: 'GET',  // Use GET to pass the ID directly
+        headers: {
+            'X-CSRFToken': getCSRFToken()  // Ensure CSRF token is sent
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to download PDF');
+        }
+        return response.blob();
+    })
+    .then(blob => {
+        const downloadUrl = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = downloadUrl;
+        a.download = 'wing_results.pdf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    })
+    .catch(error => {
+        alert('Error: ' + error.message);
+    });
+}
+
+    </script>
+{% endblock content %}

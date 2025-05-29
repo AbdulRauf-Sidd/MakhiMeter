@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+    <div id="page-content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="container">
+                    <div class="horizontal">
+                        <div class="verticals ten offset-by-one">
+                            <ol class="breadcrumb breadcrumb-fill2">
+                                <li><a href="/"><i class="fa fa-home"></i></a></li>
+                                <li><a href="/brain/upload/">Brain Analysis</a></li>
+                                <li><a> / </a></li>
+                                <li class="active">Input</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<div class="row">
+    <div class="col-md-12">
+        <section class="forms">
+            <div class="container-fluid">
+                <div class="row slider-row">
+                    <!-- <div class="col-md-12"> -->
+                        <h2>{{ img_name }}</h2>
+                        <br>
+                        <div class="img-container">
+                            <img id="slider-image" src="{% static 'images/bin.png' %}" alt="image">
+                        </div>
+                        <div class="slider-container">
+                            <input type="range" min="5" max="255" value="128" class="slider" id="image-slider">
+                        </div>
+                        <form method="GET" action="/brain/circle/" id="thresholdForm">
+                            {% csrf_token %}
+                            <!-- <input type="hidden" name="threshold" id="thresholdValue" value="128"> -->
+                            <button id="uploadBtn" class="uploadBtn" type="submit">Next</button>
+                        </form>
+                        <script>
+                            $(document).ready(function(){
+                                $("#uploadBtn").on("click", function(){
+                                    console.log("Button clicked, submitting form");
+                                    window.location.href = "/brain/circle/";
+                                });
+                            });
+
+
+                        </script>
+                    <!-- </div> -->
+                </div>
+            </div>
+        </section>
+    </div>
+</div> 
+    </div>
+
+<style>
+    .slider-row {
+        display: flex;
+        align-self: center;
+        align-content: center;
+        /* background-color: #0056b3; */
+        justify-content: center;
+    }
+    .img-container {
+        text-align: center;
+        display: flex;
+        /* justify-self: center; */
+        margin-bottom: 20px;
+    }
+
+    .img-container img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .slider-container {
+        text-align: center;
+        display: flex;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .slider {
+        width: 100%;
+    }
+
+    .nextBtn {
+        background-color: #007BFF;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .nextBtn:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+                            $(document).ready(function(){
+                                $("#uploadBtn").on("click", function(){
+                                    console.log("Button clicked, submitting form");
+                                    window.location.href = "/brain/circle/";
+                                });
+                            });
+
+
+                        </script>
+<script>
+        $(document).ready(function(){
+            $("#image-slider").on("input", function(){
+                var thresholdValue = $(this).val();
+                $.post("/brain/threshold/", {'threshold': thresholdValue, 'csrfmiddlewaretoken': '{{ csrf_token }}'}, function(data){
+                    if(data.status === 'success'){
+                        $("#slider-image").attr("src", "/static/images/bin.png?" + new Date().getTime());
+                    }
+                });
+            });
+        });
+    </script>
+
+<!-- <script>
+    document.getElementById('image-slider').addEventListener('input', function() {
+        var sliderValue = this.value;
+        var image = document.getElementById('slider-image');
+        image.style.opacity = sliderValue / 100;
+    });
+
+    document.getElementById('nextBtn').addEventListener('click', function() {
+        // Add your logic for the Next button here
+        alert('Next button clicked!');
+    });
+</script> -->
+
+
+            <!-- <style>
+                .img-container {
+                    max-width: 400px; /* set the maximum width you want */
+                    margin: auto; /* center the container */
+                }
+
+                .img-container img {
+                    max-width: 100%; /* make the image responsive */
+                    height: auto; /* auto-adjust the height */
+                }
+            </style> -->
+
+
+        <!-- </div>
+    </div> -->
+
+{% endblock %}

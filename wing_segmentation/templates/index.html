@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <!-- Banner -->
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <img src="static/images/logo.png" alt=""
+                 style="margin-top: 2%; border: none !important; box-shadow: none !important;">
+            <br>
+            <br>
+
+        </div>
+
+    </div>
+
+
+
+    <section class="main-banner">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="banner-content">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="banner-caption">
+                                    <h4>MORPHOMETRIC Analysis of <em>Drosophila</em></h4>
+                                    {#                                    <span>Welcome <span#}
+                                    {#                                            style="text-transform:uppercase"><strong> {{ request.user.username }} </strong></span></span>#}
+                                    <p>
+                                        <br>
+                                        <br>
+                                        <strong><em>Makkhimeter</em> </strong>is a web tool to digitally measure the
+                                        dimensions and
+                                        characteristics of many morphological traits of <i>Drosophila melanogaster.</i>
+                                    </p>
+                                    <p>
+                                        <strong><em>Makkhimeter</em></strong> is jointly developed by DOW Fly Research
+                                        Lab and Stock
+                                        Center, DOW
+                                        College of Biotechnology, DOW University of Health and Sciences and Department
+                                        of Computer Science, Usman Institute of
+                                        Technology, Pakistan.
+                                    </p>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section class="services">
+        <div class="container-fluid">
+            <div class="row">
+                <!--Wing-->
+                <div class="col-md-4">
+                    <div class="service-item first-item">
+                        <h4>Wing Dimensions</h4>
+                        <br>
+                        <h4><a href="/wing/upload/" target="_blank"> Process ↗ </a></h4>
+                    </div>
+                </div>
+                
+                <!--Brain-->
+                <div class="col-md-4">
+                    <div class="service-item first-item">
+                        <h4>Brain Analysis</h4>
+                        <br>
+                        <h4><a href="/brain/upload/" target="_blank"> Process ↗ </a></h4>
+                    </div>
+                </div>
+
+                <!--Flight-->
+                <div class="col-md-4">
+                    <div class="service-item first-item">
+                        <h4>Flight Trajectory</h4>
+                        <br>
+                        <h4><a href="/flight/upload/" target="_blank"> Process ↗ </a></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+{% endblock %}
