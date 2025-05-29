@@ -28,7 +28,7 @@ def process_image(image):
 
 def predict(image):    
     model = multi_unet_model()
-    model.load_weights('models/unet_256_bg_removed_13000_checkpoint_epoch-21_val_loss-0.2400.keras')  
+    model.load_weights('wing_segmentation/models/unet_256_bg_removed_13000_checkpoint_epoch-21_val_loss-0.2400.keras')  
     prediction = (model.predict(image))
     output_image = np.argmax(prediction, axis=3)[0, :, :]
     output_image = (output_image * 255 / output_image.max()).astype(np.uint8)
