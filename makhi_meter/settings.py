@@ -28,7 +28,7 @@ SECRET_KEY = "django-insecure-h%o@dz-sj5f3dv^0_t#qtxq4g(jujn2*sy)bp97sr=547pth((
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 # CSRF_COOKIE_NAME = 'csrftoken'  # Default cookie name
 # CSRF_COOKIE_SECURE = False
