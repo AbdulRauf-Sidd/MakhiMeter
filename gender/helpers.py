@@ -2,6 +2,43 @@ import joblib
 import cv2
 from skimage.feature import local_binary_pattern, hog
 import numpy as np
+from joblib import load
+
+# Load the trained SVM model and feature params
+# model = load('gender/models/dros_or_not_model.pkl')
+# params = load('gender/models/dros_feature_extraction_params.pkl')
+
+def process_new_image(image):
+    model = load('gender/models/dros_or_not_model.pkl')
+    params = load('gender/models/dros_feature_extraction_params.pkl')
+    # Convert to grayscale if needed
+    if len(image.shape) > 2:
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    
+    # Resize to the expected input size
+    image = cv2.resize(image, params['preprocessing']['target_size'])
+    
+    # Preprocessing (CLAHE + Gaussian Blur)
+    clahe = cv2.createCLAHE(**params['preprocessing']['clahe_params'])
+    image = clahe.apply(image)
+    image = cv2.GaussianBlur(image, params['preprocessing']['gaussian_blur'], 0)
+    
+    # Compute LBP features
+    lbp_image = local_binary_pattern(image, **params['lbp_params'])
+    n_bins = params['lbp_params']['P'] + 2
+    lbp_hist, _ = np.histogram(lbp_image.ravel(), bins=n_bins, range=(0, n_bins))
+    lbp_hist = lbp_hist.astype('float32')
+    lbp_hist = (lbp_hist + 1e-7) / (np.sum(lbp_hist) + 1e-7)
+    
+    # Compute HOG features
+    hog_features = hog(image, **params['hog_params'])
+    
+    # Combine features
+    combined_features = np.concatenate([lbp_hist, hog_features])
+    prediction = model.predict([combined_features])[0]
+    return prediction
+
+
 
 def load_random_forest(random_forest_model_path, hog_param_path):
     """

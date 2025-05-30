@@ -18,6 +18,11 @@ def gender_upload(request):
         img = request.FILES['img']
         file_bytes = np.asarray(bytearray(img.read()), dtype=np.uint8)
         opencv_image = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
+
+        gender = process_new_image(opencv_image)
+        if gender == 1:
+            return render(request, 'gender_identification_upload.html', {'error': 'Please upload image of drosophila'})
+
         gray_image = cv2.cvtColor(opencv_image, cv2.COLOR_BGR2GRAY)
         gray_image = cv2.resize(gray_image, (128, 128)) 
 
