@@ -28,10 +28,10 @@ def gender_upload(request):
 
         # user = request.user
 
-        rf, hog_param = load_random_forest("/home/abdulrauf/Projects/makhi_meter/gender/models/log_rf__combined_200_49_8065_hog_drosophila_model.pkl", "/home/abdulrauf/Projects/makhi_meter/gender/models/svg_params.pkl")
+        rf, hog_param = load_random_forest("gender/models/log_rf__combined_200_49_8065_hog_drosophila_model.pkl", "gender/models/svg_params.pkl")
         hog, hog_image = extract_hog_features(gray_image, hog_param)
 
-        lbp, hog_param2 = load_local_binary_pattern("/home/abdulrauf/Projects/makhi_meter/gender/models/LPB_MODEL/best_svm_gender_model.pkl", "gender/models/LPB_MODEL/feature_extraction_params.pkl")
+        lbp, hog_param2 = load_local_binary_pattern("gender/models/LPB_MODEL/best_svm_gender_model.pkl", "gender/models/LPB_MODEL/feature_extraction_params.pkl")
         # hog2, hog_image2 = extract_hog_features(gray_image, hog_param2)
         lbp_pred, lbp_score = lbp_preprocess_and_predict(model=lbp, image=gray_image, params=hog_param2)
 
@@ -47,22 +47,24 @@ def gender_upload(request):
 
         rf_pred, rf_score = rf_preprocess_and_predict(rf, hog)
 
-        fused_score = fuse_probabilities(lbp_pred=lbp_pred, lbp_score=lbp_score, rf_score=rf_score)   
-        if fused_score[0] > 0.5:
-            gender = "Male"
-        else:
-            gender= 'Female'
+        # print(lbp_pred, rf_pred)
 
-        highest_score = max(fused_score)
+        # fused_score = fuse_probabilities(lbp_pred=rf_pred, lbp_score=lbp_score, rf_score=rf_score)   
+        # if fused_score[0] > 0.5:
+        #     gender = "Male"
+        # else:
+        #     gender= 'Female'
+
+        # highest_score = max(fused_score)
 
         g = Gender.objects.create(
             # user=user,
             image=img, 
-            classification=gender,
+            classification=rf_pred,
             hog=image_file,
         )
         
-        return render(request, 'gender_identification_output.html', {"hog_map": g.hog.url, "gender_img": g.image.url, 'prediction': gender, 'score': highest_score})
+        return render(request, 'gender_identification_output.html', {"hog_map": g.hog.url, "gender_img": g.image.url, 'prediction': rf_pred, 'score': max(rf_score)})
 
 
         

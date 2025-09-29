@@ -187,5 +187,6 @@ def fuse_probabilities(lbp_pred, lbp_score, rf_score):
 
     # Compute the fused probability scores
     fused_score = lbp_weight * lbp_score + rf_weight * rf_score
+    print(fused_score)
 
     return fused_score
